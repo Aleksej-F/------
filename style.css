@@ -2,8 +2,51 @@ html{
 	font-size: 20px;
 	font-family: Arial, sans-serif;
 }
+p{
+	padding: 0;
+	margin: 0;
+}
+.content{
+	max-width: 1000px;
+	margin: 0 auto 0 auto;
+	display: flex;
+}
+.сontainerb{
+	margin: 10px 0 10px 0;
+}
+.button{
+	border: 2px solid black;
+	cursor: pointer;
+	text-align: center;
+}
+.button:hover{
+	background-color:  #9c8d8d; 
+}
+#menu{
+	flex: 1;
+	/*background-color:  darksalmon; */
+	height: 70vh;
+	flex-direction: column;
+	justify-content: center;
+	background: #afdff4d4;
+	padding: 5px;
+}
+.elem{
+	margin-bottom: 10px;
+}
+.ramka{
+	padding: 10px 0 10px 5%;
+    width: 95%;
+    background: #afdff4d4;
+    color: #161515;
+    display: block;
+}
+.countCell{
+	width: 88%;
+}
 #playGround{
-	width: 100%;
+	/*width: 100%;*/
+	flex: 4;
 	text-align: center;
 }
 .sudoku{
@@ -22,7 +65,7 @@ html{
 	border-top: solid 2px;
 }
 .sudoku td.bottom {
-	border-bottom: : solid 2px;
+	border-bottom: solid 2px;
 }
 .sudoku td.left {
 	border-left: solid 2px;
@@ -36,7 +79,7 @@ html{
 	padding: 0;
 	text-align: center;
 	color: brown;
-	background: none;
+	/*background: none;*/
 }
 .sudoku .marked{
 	background-color: #9ce29c;

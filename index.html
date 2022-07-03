@@ -6,8 +6,28 @@
 	<title>Судоку</title>
 	<link rel="stylesheet" href="style.css">
 <body>
-	<div id="playGround">
-		
+	<div class="content">
+		<div id="playGround"></div>
+		<div id="menu">
+			<div class="elem">
+				<form class="ramka">
+					<p>Сколько скрыть цифр</p>
+					<input type="text" class="countCell" value=10>
+				</form>
+			</div>
+
+			<div class="elem">
+				<form class="ramka">
+					Размер поля:
+					<select  name="size" id="size">
+				    	<option value="3" selected>3 на 3</option>
+					    <option value="4">4 на 4</option>
+					    <option value="5">5 на 5</option>
+				    </select></option>
+				</form>
+			</div>
+		</div>
+	
 	</div>
 	<script src="sc.js"></script>
 

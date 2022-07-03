@@ -1,28 +1,28 @@
  'use strict';
-
+//случайное число от min до max
 let util = {
 	randomInteger: function(min, max){
 		return Math.floor(min + Math.random() * (max + 1 - min));
 	}
 }
-
 Function.prototype.method = function(name, func){
 	if (!this.prototype[name]){
 		this.prototype[name] = func;
 		return this;
 	}
 }
-
+// заполняет массив элементами от start(по умолчанию 0)
 Array.method("fillIncr", function(length, start) {
-	 start = start || 0;
+	start = start || 0;
 	for (let i = 0; i < length; i++) {
 		this.push(i + start);
-		}
+	}
 	return this;
 })	
 Array.method("popRandom", function() {
 	return this.splice(Math.floor(Math.random()*this.length),1)[0];
 })
+// перемешивает массив
 Array.method("shuffle", function() {
 	for (let i = 0; i < this.length; i++) {
 		let index = Math.floor(Math.random() * (i + 1))
@@ -30,14 +30,12 @@ Array.method("shuffle", function() {
 		this[index] = this[i]
 		this[i] = saved
 	}
-
-
 	return this
 })	
-//метод находит член массива со значением find, меняет его на replace
-Array.method("findAndReplace", function(find,replace) {
-	let index =this.indexOf(find)
-	if (index> -1) {
+// метод находит член массива со значением find, меняет его на replace
+Array.method("findAndReplace", function(find, replace) {
+	let index = this.indexOf(find)
+	if (index > -1) {
 		this[index] = replace
 	}
 })	
@@ -50,7 +48,7 @@ Array.method("allMembers", function(value) {
 	}
 	return true
 })	
-
+// добавляет класс
 Element.method("addClass", function(className) {
 	let classes = this.className.split(" ");
 	if (classes.indexOf(className) < 0) {
@@ -59,6 +57,7 @@ Element.method("addClass", function(className) {
 	}
 	return this
 })
+// удаляет классс
 Element.method("removeClass", function(className) {
 	let classes = this.className.split(" ");
 	let index = classes.indexOf(className);
@@ -68,11 +67,8 @@ Element.method("removeClass", function(className) {
 	}
 	return this
 })
-
-
 let app = {};
 app.Sudoku = function(are) {
-	
 	let table = document.createElement("table");
 	table.addClass("sudoku");
 	let area = are || 3;
@@ -81,7 +77,7 @@ app.Sudoku = function(are) {
 		let row = table.insertRow(-1);
 	for (let j = 0; j < expo; j++) {
 			let cell = row.insertCell(-1);
-			cell.innerHTML = i + ";" + j;
+			// cell.innerHTML = i + ";" + j;
 			switch (i%area){
 				case 0:
 					cell.addClass("top");
@@ -98,7 +94,6 @@ app.Sudoku = function(are) {
 				case area-1:
 					cell.addClass("right");
 				break;
-
 			}
 		}
 	}
@@ -172,15 +167,16 @@ app.Sudoku.prototype = {
 			}
 			if (columns[i].allMembers(0)) {
 				that.markColum(i)
-				correct.colums++
+				correct.columns++
 			}
 			if (areas[i].allMembers(0)) {
 				that.markArea(i)
 				correct.areas++
 			}
 		}
+		
 		if (correct.rows === that.expo &&
-			correct.colums === that.expo &&
+			correct.columns === that.expo &&
 			correct.areas === that.expo ) {	
 			if (typeof(that.win) === "function") {
 				that.win()
@@ -229,7 +225,7 @@ app.Sudoku.prototype = {
 			}
 		}
 	},
-	//нимает отметки со всего игрового поля
+	//снимает отметки со всего игрового поля
 	unmark: function() {
 		let that = this;
 		Array.prototype.forEach.call(that.table.rows, function(row,i) {
@@ -242,7 +238,11 @@ app.Sudoku.prototype = {
 		let that = this;
 		let area = Math.sqrt(that.expo);
 		return parseInt(row/area)*area + parseInt(column/area)
+	},
+	win: function() {
+		win()
 	}
+	
 
 }
 
@@ -260,7 +260,6 @@ app.Generator = function(area){
 		for (let j = 0; j < expo; j++) {
 			row.push(base.slice(start, expo).concat(base)[j])
 			//console.log(j ,' - ', base.slice(start, expo).concat(base)[j])
-
 		}
 		rows.push(row)
 	}
@@ -278,7 +277,7 @@ app.Generator.prototype = {
 
 	invertHorizontal: function() {
 		let that = this; 
-		console.log(that)
+		
 		for (let j = 0; j < that.expo; j++) {
 			that.rows[j].reverse();
 		}
@@ -304,7 +303,6 @@ app.Generator.prototype = {
 			let row = that.rows.splice(sourcePosition,1)[0];
 			that.rows.splice(destPosition,0,row);
 		}
-		
 		return that;
 	},
 	//перемешивать колонки
@@ -320,22 +318,17 @@ app.Generator.prototype = {
 				let cell = that.rows[j].splice(sourcePosition,1)[0];
 				that.rows[j].splice(destPosition,0,cell);
 			}
-			
 		}
-		
 		return that;
 	},
 	swapRowsRange: function(count) {
 		let that = this; 
-		console.log(that)
 		for (let i = 0; i < count; i++) {
 			let values = that.getPositions();
 			let rows = that.rows.splice(values.startPos * that.area, that.area);
 			let args = [values.destPos*that.area, 0].concat(rows);
 			that.rows.splice.apply(that.rows, args);
-			
 		}
-		
 		return that;
 	},
 	swapColumnsRange: function(count) {
@@ -348,16 +341,13 @@ app.Generator.prototype = {
 				that.rows[j].splice.apply(that.rows[j], args);
 			}
 		}
-		
 		return that;
 	},
 	//заменить все цифры в таблице значений
 	shakeAll: function() {
 		let that = this;
 		let shaked = [].fillIncr(this.expo, 1);
-		console.log(shaked)
 		shaked.shuffle();
-		console.log(shaked)
 		for (let i = 0; i < that.expo; i++) {
 			for (let j = 0; j < that.expo; j++) {
 				that.rows[i][j] = shaked[that.rows[i][j]-1]
@@ -369,18 +359,17 @@ app.Generator.prototype = {
 
 //создаем конструктор для типа Timer, который будет отвечать за учет времени и очков
 app.Timer = function(){
+	
 	let that = this
 	let content = document.createElement('div').addClass("timer");
 	let display = document.createElement('div').addClass("display");
 	content.appendChild(display)
 	that.now = 0;
-	that.timer = setInterval(function(){
-		that.now++
-		that.refresh()
-
-	}, 1000)
+	
+	that.timers()
 	that.content = content
 	that.display = display
+	that.paused = false
 	that.refresh() 
 }
 
@@ -388,44 +377,150 @@ app.Timer.prototype = {
 	//метод для обновления состояния времени
 	refresh: function(){
 		let that = this
-		that.display.innerHTML = "Прошло времени: "+ that.now + "сек."
+		that.display.innerHTML = "Прошло времени: " + that.now + "сек."
 	},
+	//обсчет очков
 	getScore: function(){
 		return Math.pow(app.parameters.hided * app.parameters.area, 2) * 1000 / this.now
-
 	},
+	// удаление setInterval при паузе или в конце игры
 	stop: function(){
 		clearInterval(this.timer)
+	},
+	// пауза игры
+	pauseds: function(){
+		console.log('пауза')
+		let that = this
+		console.log(that)
+		if (that.paused) {
+			that.paused = !that.paused
+			that.timers()
+		} else {
+			that.paused = !that.paused
+			that.stop()
+		}
+	},
+	// метод для создания таймера
+	timers: function(){
+		let that = this
+		that.timer = setInterval(function(){
+			that.now++
+			that.refresh()
+		}, 1000)
 	}
+}
+
+//создаем конструктор для кнопки
+app.Button = function(name,click){
+	let that = this
+	let buttonСontainer = document.createElement('div').addClass("сontainerb");
+	let button = document.createElement('div').addClass("button");
+	let text = document.createElement('div').addClass("text");
+		buttonСontainer.appendChild(button)
+		button.appendChild(text)
+		button.addEventListener("click", function() {
+			that[click]()
+		})
+	that.button = buttonСontainer
+	that.text = text
+	that.name(name)
+	// that.timer = timer
+}
+app.Button.prototype = {
+	//метод для обновления названия кнопки
+	name: function(name){
+		let that = this
+		that.text.innerHTML = name
+	},
+	clickBtStart: function(){
+		let that = this
+		console.log('клик', that)
+			
+		if (that.text.innerHTML === 'начать') {
+			start()
+			tbl.fill(generator.rows);
+			tbl.hide(app.parameters.hided)
+			let timer = new app.Timer()
+			console.log(timer)
+			document.body.querySelector("#playGround").appendChild(timer.content)
+			that.timer(timer)
+			that.name('новая игра')
+			
+			buttonPaused.timer(timer)
+			console.log(buttonPaused)
+		} else {
+			that.name('начать')
+			that.timer.stop();
+			
+			start()
+		}
+		
+	},
+	clickPaused: function() {
+		let that = this
+		that.timer.pauseds();
+		that.timer.paused ? that.name('продолжить') : that.name('пауза')
+	},
+	//ссылка на таймер
+	timer: function(w){
+		this.timer = w
+	},
+	addToMenu: function(){
+		document.body.querySelector("#menu").appendChild(this.button)
+	}
+
 }
 
 app.parameters = {
 	area: 3,  //размер области
 	shuffle: 15,//колличествоперемешиваний
-	hided: 45 // колличество скрытых ячеек
+	hided: 10 // колличество скрытых ячеек
 }
 
-
-
-let tbl = new app.Sudoku(app.parameters.area);
-document.body.querySelector("#playGround").appendChild(tbl.table);
+let tbl = {}
 let generator = new app.Generator(app.parameters.area);
-generator.swapRows(15)
-.swapColumns(15)
-.swapRowsRange(15)
-	.swapColumnsRange(5)
-	.shakeAll()
-;
-util.randomInteger(0,1) ? generator.invertVertical() : 0;
-util.randomInteger(0,1) ? generator.invertHorizontal() : 0;
 
-tbl.fill(generator.rows);
-tbl.hide(15)
+const start = function (areas) {
 
-let timer = new app.Timer()
-document.body.querySelector("#playGround").appendChild(timer.content)
+	tbl = new app.Sudoku(app.parameters.area);
+	document.body.querySelector("#playGround").innerHTML=""
+	document.body.querySelector("#playGround").appendChild(tbl.table);
+	generator = new app.Generator(app.parameters.area);
+	generator.swapRows(app.parameters.shuffle)
+		.swapColumns(app.parameters.shuffle)
+		.swapRowsRange(app.parameters.shuffle)
+		.swapColumnsRange(app.parameters.shuffle)
+		.shakeAll()
+	;
+	util.randomInteger(0,1) ? generator.invertVertical() : 0;
+	util.randomInteger(0,1) ? generator.invertHorizontal() : 0;
 
-tbl.win = function() {
-	alert("Поздраляем! Вы победили со счетом " + timer.getScore())
-	timer.stop();
 }
+
+start()
+
+let button = new app.Button('начать', 'clickBtStart')
+button.addToMenu()
+let buttonPaused = new app.Button('пауза', 'clickPaused')
+buttonPaused.addToMenu()
+buttonPaused.button.hidden = false;
+
+//размер поля
+const size = document.body.querySelector("#size")
+size.onchange = function() {
+	app.parameters.area = parseInt(size.value)
+	start()
+}
+//колличество скрытых цифр
+const countCell = document.body.querySelector(".countCell")
+countCell.onchange = function() {
+	app.parameters.hided = parseInt(countCell.value)
+}
+	// app.parameters.hided = parseInt(countCell.value)
+button.addToMenu()
+
+const win = function() {
+		alert("Поздраляем! Вы победили со счетом " + button.timer.getScore())
+		button.timer.stop();
+		button.name('новая игра')
+	}
